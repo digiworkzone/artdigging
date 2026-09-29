@@ -51,7 +51,7 @@ export const exhibitions: Exhibition[] = [
     site: "Nomadic Art Gallery",
     address: "22 Adetokunbo Ademola Road, Victoria Island, Lagos",
     events: [{ name: "Community Banter", date: "2 March 2024", time: "4pm – 8pm" }],
-    curatedBy: "Art Digging",
+    curatedBy: "Art Digging (Mercy & Sam)",
     presentedWith: "Nomadic Art Gallery",
     alongside: {
       name: "Lagos Biennial 2024",
