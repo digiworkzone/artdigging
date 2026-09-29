@@ -35,6 +35,9 @@ export type Exhibition = {
   artists: ExhibitionArtist[];
   poster: string;
   posterAlt: string;
+  /** Where the full set of works can be seen. */
+  worksUrl: string;
+  video?: { youtubeId: string; start?: number };
   links: { label: string; url: string }[];
 };
 
@@ -80,9 +83,11 @@ export const exhibitions: Exhibition[] = [
     poster: "/images/curatorial/refuge-in-community-poster.jpg",
     posterAlt:
       "Yellow poster: Community Banter, March 2nd 2024, 4pm to 8pm. Refuge in Community. Nomadic Art Gallery, 22 Adetokunbo Ademola Road, Victoria Island, Lagos. Logos of Lagos Biennial, Art Digging and Nomadic Art Gallery.",
+    worksUrl: "https://nomadic-art.com/refuge-in-community/",
+    video: { youtubeId: "FllXcEcWoPQ", start: 41 },
     links: [
-      { label: "Nomadic Art", url: "https://nomadic-art.com/refuge-in-community/" },
-      { label: "Lagos Biennial 2024", url: "https://lagos-biennial.org/lb-2024/" },
+      { label: "See the works on Nomadic Art", url: "https://nomadic-art.com/refuge-in-community/" },
+      { label: "More on Lagos Biennial 2024", url: "https://lagos-biennial.org/lb-2024/" },
     ],
   },
 ];

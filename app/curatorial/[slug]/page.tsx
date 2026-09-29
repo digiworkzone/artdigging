@@ -3,7 +3,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import { exhibitions, getExhibition } from "@/lib/exhibitions";
-import { site } from "@/lib/site";
+import VideoEmbed from "@/components/VideoEmbed";
+import ExhibitionLinks from "@/components/ExhibitionLinks";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -102,12 +103,29 @@ export default async function ExhibitionPage({ params }: Props) {
         </div>
       </section>
 
+      {ex.video ? (
+        <section id="watch" className="shell scroll-mt-24 py-24">
+          <p className="label mb-4">Watch</p>
+          <p className="mb-12 font-serif text-xl text-dust italic">Step inside the dig.</p>
+          <Reveal>
+            <VideoEmbed youtubeId={ex.video.youtubeId} start={ex.video.start} title={`${ex.title}: video`} />
+          </Reveal>
+        </section>
+      ) : null}
+
       {/* Each artist is a layer in the dig; their pieces sit inside it. */}
       <section className="shell py-24">
-        <p className="label mb-4">The finds</p>
-        <p className="mb-14 font-serif text-xl text-dust italic">
-          {ex.artists.length} artists, one ground.
-        </p>
+        <div className="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="label mb-4">The finds</p>
+            <p className="font-serif text-xl text-dust italic">
+              {ex.artists.length} artists, one ground.
+            </p>
+          </div>
+          <a href={ex.worksUrl} target="_blank" rel="noreferrer" className="link-line">
+            See the works <span aria-hidden>↗</span>
+          </a>
+        </div>
         <div className="border-b border-bone/10">
           {ex.artists.map((artist, i) => (
             <div key={artist.name} className="border-t border-bone/10 py-10">
@@ -143,15 +161,8 @@ export default async function ExhibitionPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="shell flex flex-col gap-6 pt-12 pb-32 sm:flex-row sm:gap-12">
-        {ex.links.map((l) => (
-          <a key={l.url} href={l.url} target="_blank" rel="noreferrer" className="link-line">
-            {l.label} <span aria-hidden>↗</span>
-          </a>
-        ))}
-        <a href={site.instagram} target="_blank" rel="noreferrer" className="link-line">
-          {site.instagramHandle} <span aria-hidden>↗</span>
-        </a>
+      <section className="shell pt-12 pb-32">
+        <ExhibitionLinks exhibition={ex} instagram />
       </section>
     </>
   );

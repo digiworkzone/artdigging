@@ -3,6 +3,7 @@ import Reveal from "@/components/Reveal";
 import StoryCard from "@/components/StoryCard";
 import ExhibitionFeature from "@/components/ExhibitionFeature";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import ExhibitionLinks from "@/components/ExhibitionLinks";
 import { exhibitions } from "@/lib/exhibitions";
 import { stories } from "@/lib/stories";
 import Link from "next/link";
@@ -24,6 +25,14 @@ export default function HomePage() {
       <section id="dig" className="shell scroll-mt-24 pb-32 sm:pb-48">
         <Reveal>
           <ExhibitionFeature exhibition={exhibitions[0]} />
+        </Reveal>
+        <Reveal className="mt-16 border-t border-bone/10 pt-10">
+          <div className="flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:gap-x-12">
+            <Link href={`/curatorial/${exhibitions[0].slug}#watch`} className="link-line">
+              Watch <span aria-hidden>▶</span>
+            </Link>
+            <ExhibitionLinks exhibition={exhibitions[0]} />
+          </div>
         </Reveal>
       </section>
 

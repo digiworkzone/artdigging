@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
+import VideoEmbed from "@/components/VideoEmbed";
+import ExhibitionLinks from "@/components/ExhibitionLinks";
 import { getExhibition } from "@/lib/exhibitions";
 import { getStory, stories } from "@/lib/stories";
 import { formatDate } from "@/lib/utils";
@@ -56,10 +58,23 @@ export default async function StoryPage({ params }: Props) {
           ))}
         </div>
 
+        {exhibition?.video ? (
+          <Reveal className="mt-16">
+            <VideoEmbed
+              youtubeId={exhibition.video.youtubeId}
+              start={exhibition.video.start}
+              title={`${exhibition.title}: video`}
+            />
+          </Reveal>
+        ) : null}
+
         {exhibition ? (
-          <Link href={`/curatorial/${exhibition.slug}`} className="link-line mt-16">
-            Dig {exhibition.number}: {exhibition.title} <span aria-hidden>→</span>
-          </Link>
+          <div className="mt-16 space-y-5">
+            <Link href={`/curatorial/${exhibition.slug}`} className="link-line">
+              Dig {exhibition.number}: {exhibition.title} <span aria-hidden>→</span>
+            </Link>
+            <ExhibitionLinks exhibition={exhibition} />
+          </div>
         ) : null}
       </div>
     </article>
