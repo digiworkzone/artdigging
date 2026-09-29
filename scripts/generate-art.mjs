@@ -226,9 +226,39 @@ ${finish(W, H)}
 `;
 }
 
+// Refuge in Community: many small forms gathered under one arc of shelter.
+function refuge() {
+  const W = 1600, H = 1000;
+  const pal = palettes.ochre;
+  const r = rng(hash("refuge-in-community"));
+  const bands = strata(r, pal, W, H, { top: H * 0.3, count: 13, amp: 18 });
+  const cx = W * 0.64, base = H * 0.72, span = 330;
+  let crowd = `<circle cx="${cx}" cy="${base - 80}" r="420" fill="url(#glow)"/>
+<path d="M${cx - span} ${base} A${span} ${span * 0.8} 0 0 1 ${cx + span} ${base}" fill="none" stroke="${pal[7]}" stroke-width="3" opacity="0.9"/>
+<path d="M${cx - span - 22} ${base} A${span + 22} ${(span + 22) * 0.8} 0 0 1 ${cx + span + 22} ${base}" fill="none" stroke="${pal[6]}" stroke-width="1" opacity="0.45"/>`;
+  for (let i = 0; i < 150; i++) {
+    // Denser toward the centre, all inside the arc.
+    const t = (r() + r() + r()) / 3 - 0.5;
+    const x = cx + t * span * 1.8;
+    const room = Math.sqrt(Math.max(0, 1 - ((x - cx) / span) ** 2)) * span * 0.8;
+    const y = base - 8 - r() * Math.max(0, room - 30);
+    const size = 4 + r() * 9;
+    const lit = r() < 0.08;
+    crowd += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(size)}" fill="${lit ? pal[7] : pal[1 + Math.floor(r() * 3)]}" opacity="${lit ? 0.95 : 0.9}"/>`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice">
+${defs(pal, W, H)}
+${buried(bands, base - 10, crowd)}
+${finish(W, H)}
+</svg>
+`;
+}
+
+mkdirSync(new URL("curatorial/", root), { recursive: true });
+writeFileSync(new URL("curatorial/refuge-in-community.svg", root), refuge());
 mkdirSync(new URL("works/", root), { recursive: true });
 mkdirSync(new URL("artists/", root), { recursive: true });
 for (const w of works) writeFileSync(new URL(`works/${w.slug}.svg`, root), artwork(w));
 for (const a of artists) writeFileSync(new URL(`artists/${a.slug}.svg`, root), portrait(a));
 writeFileSync(new URL("hero.svg", root), hero());
-console.log(`Wrote ${works.length} works, ${artists.length} portraits and hero to public/images`);
+console.log(`Wrote ${works.length} works, ${artists.length} portraits, hero and curatorial art to public/images`);

@@ -12,6 +12,9 @@ export default function Footer() {
           <p className="mt-3 font-serif text-lg text-dust italic">{site.tagline}</p>
         </div>
         <div className="flex flex-col gap-2 text-sm text-dust md:items-end">
+          <a href={site.instagram} target="_blank" rel="noreferrer" className="transition-colors hover:text-bone">
+            Instagram {site.instagramHandle}
+          </a>
           <a href={`mailto:${site.contactEmail}`} className="transition-colors hover:text-bone">
             {site.contactEmail}
           </a>

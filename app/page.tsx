@@ -6,7 +6,9 @@ import ArtistCard from "@/components/ArtistCard";
 import StoryCard from "@/components/StoryCard";
 import CollectionRow from "@/components/CollectionRow";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import ExhibitionFeature from "@/components/ExhibitionFeature";
 import { artists, artworks, collections, stories } from "@/lib/data";
+import { exhibitions } from "@/lib/exhibitions";
 
 export default function HomePage() {
   return (
@@ -22,7 +24,9 @@ export default function HomePage() {
         </Reveal>
       </section>
 
-      <section id="unearthed" className="shell scroll-mt-24 pb-32">
+      <ExhibitionFeature exhibition={exhibitions[0]} />
+
+      <section id="unearthed" className="shell scroll-mt-24 py-32">
         <SectionHeader label="Unearthed" title="Recent finds" href="/artworks" action="All works" />
         <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {artworks.slice(0, 3).map((artwork, i) => (

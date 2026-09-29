@@ -29,3 +29,9 @@ scripts/generate-art.mjs   regenerates placeholder art in public/images (`npm ru
 - The artists, works and stories in `lib/data.ts` are **fictional placeholders**. Replace them with real, consented content and real artwork images.
 - `lib/site.ts` has a placeholder contact email.
 - `app/api/subscribe/route.ts` needs a mailing-list provider to actually store sign-ups.
+
+## Curatorial
+
+Exhibitions curated by Art Digging live in `lib/exhibitions.ts` and render at `/curatorial`.
+To add the pieces for an exhibition, fill in each artist's `works` array (title, year, medium,
+dimensions) and put the images in `public/images/curatorial/`.

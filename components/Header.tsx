@@ -6,6 +6,7 @@ const navItems = [
   { href: "/artists", label: "Artists" },
   { href: "/stories", label: "Stories" },
   { href: "/collections", label: "Collections" },
+  { href: "/curatorial", label: "Curatorial" },
 ];
 
 export default function Header() {
@@ -16,7 +17,7 @@ export default function Header() {
           Art Digging
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-10 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
