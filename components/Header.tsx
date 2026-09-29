@@ -4,6 +4,7 @@ import Logo from "@/components/Logo";
 const navItems = [
   { href: "/stories", label: "Stories" },
   { href: "/curatorial", label: "Curatorial" },
+  { href: "/why", label: "Why" },
 ];
 
 export default function Header() {
