@@ -22,7 +22,15 @@ export default function Footer() {
           <a href={`mailto:${site.contactEmail}`} className="transition-colors hover:text-bone">
             {site.contactEmail}
           </a>
-          <p className="text-xs">© {new Date().getFullYear()} Art Digging</p>
+          <p className="flex gap-4 text-xs">
+            <span>© {new Date().getFullYear()} Art Digging</span>
+            <Link href="/privacy" className="transition-colors hover:text-bone">
+              Privacy
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-bone">
+              Terms
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
