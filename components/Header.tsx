@@ -8,7 +8,7 @@ const navItems = [
 
 export default function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-void/90 to-transparent">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-bone/5 bg-void/80 backdrop-blur-md">
       <div className="shell flex h-20 items-center justify-between">
         <Link href="/" className="group flex items-center gap-3 text-bone" aria-label="Art Digging, home">
           <Logo className="h-9 w-auto transition-colors group-hover:text-ember" />

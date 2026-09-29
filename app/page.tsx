@@ -31,6 +31,9 @@ export default function HomePage() {
             <Link href={`/curatorial/${exhibitions[0].slug}#watch`} className="link-line">
               Watch <span aria-hidden>▶</span>
             </Link>
+            <Link href={`/curatorial/${exhibitions[0].slug}#finds`} className="link-line">
+              See the works <span aria-hidden>→</span>
+            </Link>
             <ExhibitionLinks exhibition={exhibitions[0]} />
           </div>
         </Reveal>

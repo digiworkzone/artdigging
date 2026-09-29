@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import { exhibitions, getExhibition } from "@/lib/exhibitions";
 import VideoEmbed from "@/components/VideoEmbed";
 import ExhibitionLinks from "@/components/ExhibitionLinks";
+import { stories } from "@/lib/stories";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,8 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ExhibitionPage({ params }: Props) {
   const ex = getExhibition((await params).slug);
   if (!ex) notFound();
+  const story = stories.find((s) => s.exhibitionSlug === ex.slug && s.chapters);
 
   const record = [
+    { term: "Format", value: ex.format },
     { term: "Site", value: `${ex.site}, ${ex.address}` },
     { term: "Period", value: ex.period },
     ...ex.events.map((e) => ({ term: e.name, value: `${e.date}, ${e.time}` })),
@@ -77,6 +81,16 @@ export default async function ExhibitionPage({ params }: Props) {
         </dl>
       </section>
 
+      <section className="shell py-24">
+        <div className="mx-auto max-w-2xl space-y-6 text-lg leading-8 text-bone/75">
+          {ex.statement.map((p) => (
+            <Reveal key={p}>
+              <p>{p}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       <section className="shell py-24 sm:py-36">
         <div className="mx-auto max-w-4xl space-y-10">
           {ex.questions.map((q, i) => (
@@ -90,16 +104,13 @@ export default async function ExhibitionPage({ params }: Props) {
               </p>
             </Reveal>
           ))}
-        </div>
-      </section>
-
-      <section className="shell pb-24">
-        <div className="mx-auto max-w-2xl space-y-6 text-lg leading-8 text-bone/75">
-          {ex.statement.map((p) => (
-            <Reveal key={p}>
-              <p>{p}</p>
+          {story ? (
+            <Reveal>
+              <Link href={`/stories/${story.slug}`} className="link-line pt-6">
+                Read the story: {story.title} <span aria-hidden>→</span>
+              </Link>
             </Reveal>
-          ))}
+          ) : null}
         </div>
       </section>
 
@@ -114,48 +125,61 @@ export default async function ExhibitionPage({ params }: Props) {
       ) : null}
 
       {/* Each artist is a layer in the dig; their pieces sit inside it. */}
-      <section className="shell py-24">
-        <div className="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="label mb-4">The finds</p>
-            <p className="font-serif text-xl text-dust italic">
-              {ex.artists.length} artists, one ground.
-            </p>
-          </div>
-          <a href={ex.worksUrl} target="_blank" rel="noreferrer" className="link-line">
-            See the works <span aria-hidden>↗</span>
-          </a>
-        </div>
+      <section id="finds" className="shell scroll-mt-24 py-24">
+        <p className="label mb-4">The finds</p>
+        <p className="mb-14 font-serif text-xl text-dust italic">
+          {ex.artists.length} artists, {ex.artists.reduce((n, a) => n + a.works.length, 0)} works, one ground.
+        </p>
         <div className="border-b border-bone/10">
           {ex.artists.map((artist, i) => (
-            <div key={artist.name} className="border-t border-bone/10 py-10">
-              <Reveal className="grid grid-cols-[auto_1fr] items-baseline gap-6 sm:gap-10">
-                <span className="font-serif text-lg text-dust">0{i + 1}</span>
-                <h2 className="font-serif text-4xl text-bone sm:text-6xl">{artist.name}</h2>
+            <div key={artist.slug} id={artist.slug} className="scroll-mt-24 border-t border-bone/10 py-16">
+              <Reveal className="grid gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+                <Image
+                  src={artist.portrait}
+                  alt={`Portrait of ${artist.name}`}
+                  width={400}
+                  height={400}
+                  className="size-28 rounded-full object-cover grayscale sm:size-36"
+                />
+                <div>
+                  <p className="font-serif text-lg text-dust">0{i + 1}</p>
+                  <h2 className="mt-1 font-serif text-4xl text-bone sm:text-6xl">{artist.name}</h2>
+                  <div className="mt-6 max-w-2xl space-y-4 leading-7 text-bone/70">
+                    {artist.bio.map((p) => (
+                      <p key={p}>{p}</p>
+                    ))}
+                  </div>
+                </div>
               </Reveal>
-              {artist.works.length ? (
-                <div className="mt-10 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                  {artist.works.map((w) => (
-                    <figure key={w.title}>
-                      {w.image ? (
-                        <Image
-                          src={w.image}
-                          alt={w.imageAlt ?? `${w.title} by ${artist.name}`}
-                          width={800}
-                          height={1000}
-                          className="aspect-[4/5] w-full bg-soil object-cover"
-                        />
-                      ) : null}
-                      <figcaption className="mt-4">
-                        <p className="font-serif text-2xl text-bone">{w.title}</p>
+              <div className="mt-14 grid gap-x-10 gap-y-16 sm:grid-cols-2">
+                {artist.works.map((w, j) => (
+                  <Reveal key={w.slug} delay={j * 120}>
+                    <figure id={w.slug} className="scroll-mt-24">
+                      <Image
+                        src={w.image}
+                        alt={`${w.title} by ${artist.name}`}
+                        width={w.width}
+                        height={w.height}
+                        sizes="(min-width: 640px) 50vw, 100vw"
+                        className="w-full bg-soil shadow-2xl shadow-black/50"
+                      />
+                      <figcaption className="mt-6">
+                        <p className="font-serif text-3xl text-bone">{w.title}</p>
                         <p className="mt-1 text-sm text-dust">
-                          {[w.year, w.medium, w.dimensions].filter(Boolean).join(" · ")}
+                          {w.year} · {w.medium} · {w.dimensions}
                         </p>
+                        <p className="mt-4 max-w-lg font-serif text-lg leading-snug text-bone/70 italic">{w.note}</p>
+                        <a
+                          href={`mailto:${ex.enquiriesEmail}?subject=${encodeURIComponent(`Enquiry: ${w.title} by ${artist.name}`)}`}
+                          className="mt-5 inline-flex text-xs tracking-[0.2em] text-dust uppercase transition-colors hover:text-ember"
+                        >
+                          Price on request · Enquire
+                        </a>
                       </figcaption>
                     </figure>
-                  ))}
-                </div>
-              ) : null}
+                  </Reveal>
+                ))}
+              </div>
             </div>
           ))}
         </div>

@@ -27,9 +27,12 @@ public/images/        real images only
 
 ## Adding content
 
-- **Exhibition pieces:** in `lib/exhibitions.ts`, fill in each artist's `works`
-  (title, year, medium, dimensions, image). Put images in `public/images/curatorial/`.
-- **Stories:** add entries to `lib/stories.ts`. `image` is optional.
+- **Exhibition pieces:** in `lib/exhibitions.ts`, each artist has `works`
+  (title, year, medium, dimensions, note, image + its pixel width/height).
+  Images live in `public/images/curatorial/<exhibition>/`.
+- **Stories:** add entries to `lib/stories.ts`. `image` is optional. A story with
+  `chapters` renders as an I / We story: each chapter pairs a question and a work
+  from the exhibition with two readings, `one` (I) and `many` (We).
 - **New exhibition:** add another entry to `exhibitions` with the next `number`.
 
 ## Before launch
