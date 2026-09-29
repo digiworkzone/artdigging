@@ -23,8 +23,9 @@ export default async function ExhibitionPage({ params }: Props) {
   if (!ex) notFound();
 
   const record = [
-    { term: "Site", value: ex.site },
+    { term: "Site", value: `${ex.site}, ${ex.address}` },
     { term: "Period", value: ex.period },
+    ...ex.events.map((e) => ({ term: e.name, value: `${e.date}, ${e.time}` })),
     { term: "Curated by", value: ex.curatedBy },
     { term: "Presented with", value: ex.presentedWith },
     {
@@ -35,24 +36,37 @@ export default async function ExhibitionPage({ params }: Props) {
 
   return (
     <>
-      <section className="relative isolate flex min-h-[100svh] items-end overflow-hidden">
-        <Image src={ex.image} alt="" fill priority className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-void via-void/40 to-void/80" />
-        <div className="shell pb-20 sm:pb-28">
-          <p className="label animate-rise">Curatorial · Dig {ex.number}</p>
-          <h1 className="mt-6 max-w-5xl animate-rise font-serif text-6xl leading-[0.9] font-light text-bone [animation-delay:120ms] sm:text-8xl lg:text-9xl">
-            {ex.title}
-          </h1>
-          <p className="mt-8 animate-rise font-serif text-2xl text-ember italic [animation-delay:260ms] sm:text-3xl">
-            {ex.line}
-          </p>
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_75%_60%,rgba(200,116,58,0.18),transparent_55%)]" />
+        <div className="shell grid min-h-[100svh] items-center gap-14 pt-32 pb-20 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
+          <div>
+            <p className="label animate-rise">Curatorial · Dig {ex.number}</p>
+            <h1 className="mt-6 animate-rise font-serif text-6xl leading-[0.9] font-light text-bone [animation-delay:120ms] sm:text-8xl lg:text-9xl">
+              {ex.title}
+            </h1>
+            <p className="mt-8 animate-rise font-serif text-2xl text-ember italic [animation-delay:260ms] sm:text-3xl">
+              {ex.line}
+            </p>
+          </div>
+          {/* Found at the site: the partnership poster. */}
+          <figure className="animate-rise [animation-delay:400ms] lg:justify-self-end">
+            <Image
+              src={ex.poster}
+              alt={ex.posterAlt}
+              width={1080}
+              height={1080}
+              priority
+              className="w-full max-w-md rotate-2 shadow-2xl shadow-black/70"
+            />
+            <figcaption className="label mt-6">Found at the site · Partnership poster</figcaption>
+          </figure>
         </div>
       </section>
 
       {/* The dig record: where, when, and who dug. */}
       <section className="shell py-24">
         <p className="label mb-10">Dig record</p>
-        <dl className="grid gap-px border border-bone/10 bg-bone/10 sm:grid-cols-2 lg:grid-cols-5">
+        <dl className="grid gap-px border border-bone/10 bg-bone/10 sm:grid-cols-2 lg:grid-cols-3">
           {record.map((r) => (
             <div key={r.term} className="bg-void p-6">
               <dt className="label">{r.term}</dt>

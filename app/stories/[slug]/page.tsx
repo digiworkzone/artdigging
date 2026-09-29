@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
-import ArtworkCard from "@/components/ArtworkCard";
-import { getArtist, getStory, stories, worksBy } from "@/lib/data";
+import { getExhibition } from "@/lib/exhibitions";
+import { getStory, stories } from "@/lib/stories";
 import { formatDate } from "@/lib/utils";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -21,52 +21,47 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function StoryPage({ params }: Props) {
   const story = getStory((await params).slug);
   if (!story) notFound();
-  const artist = getArtist(story.artistSlug);
-  const works = worksBy(story.artistSlug);
+  const exhibition = story.exhibitionSlug ? getExhibition(story.exhibitionSlug) : undefined;
 
   return (
-    <>
-      <section className="relative isolate flex min-h-[80svh] items-end overflow-hidden">
-        <Image src={story.image} alt={story.imageAlt} fill priority className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-void via-void/60 to-void/30" />
-        <div className="shell pb-16">
-          <p className="label animate-rise">
-            {story.kind} · {formatDate(story.publishedAt)}
-          </p>
-          <h1 className="mt-5 max-w-4xl animate-rise font-serif text-6xl leading-[0.95] font-light text-bone [animation-delay:100ms] sm:text-8xl">
-            {story.title}
-          </h1>
-        </div>
-      </section>
+    <article className="shell pt-40 pb-32 sm:pt-48">
+      <div className="mx-auto max-w-2xl">
+        <p className="label animate-rise">
+          {story.kind} · {formatDate(story.publishedAt)}
+        </p>
+        <h1 className="mt-6 animate-rise font-serif text-6xl leading-[0.95] font-light text-bone [animation-delay:120ms] sm:text-8xl">
+          {story.title}
+        </h1>
+        <p className="mt-8 animate-rise font-serif text-2xl leading-snug text-ember italic [animation-delay:240ms]">
+          {story.excerpt}
+        </p>
 
-      <article className="shell py-24">
-        <div className="mx-auto max-w-2xl">
-          <p className="font-serif text-2xl leading-snug text-ember italic">{story.excerpt}</p>
-          <div className="mt-12 space-y-7 text-lg leading-8 text-bone/80">
-            {story.body.map((p) => (
-              <Reveal key={p}>
-                <p>{p}</p>
-              </Reveal>
-            ))}
-          </div>
-          {artist ? (
-            <Link href={`/artists/${artist.slug}`} className="link-line mt-16">
-              {artist.name} <span aria-hidden>→</span>
-            </Link>
-          ) : null}
-        </div>
-      </article>
+        {story.image ? (
+          <Reveal className="my-16">
+            <Image
+              src={story.image}
+              alt={story.imageAlt ?? ""}
+              width={1080}
+              height={1080}
+              className="mx-auto w-full max-w-md shadow-2xl shadow-black/60"
+            />
+          </Reveal>
+        ) : null}
 
-      {works.length ? (
-        <section className="shell border-t border-bone/10 py-24">
-          <p className="label mb-12">The works</p>
-          <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            {works.map((w) => (
-              <ArtworkCard key={w.slug} artwork={w} />
-            ))}
-          </div>
-        </section>
-      ) : null}
-    </>
+        <div className="mt-12 space-y-7 text-lg leading-8 text-bone/80">
+          {story.body.map((p) => (
+            <Reveal key={p}>
+              <p>{p}</p>
+            </Reveal>
+          ))}
+        </div>
+
+        {exhibition ? (
+          <Link href={`/curatorial/${exhibition.slug}`} className="link-line mt-16">
+            Dig {exhibition.number}: {exhibition.title} <span aria-hidden>→</span>
+          </Link>
+        ) : null}
+      </div>
+    </article>
   );
 }

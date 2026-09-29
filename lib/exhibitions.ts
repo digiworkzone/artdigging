@@ -19,6 +19,8 @@ export type Exhibition = {
   line: string;
   period: string;
   site: string;
+  address: string;
+  events: { name: string; date: string; time: string }[];
   curatedBy: string;
   presentedWith: string;
   alongside: {
@@ -31,7 +33,8 @@ export type Exhibition = {
   questions: string[];
   statement: string[];
   artists: ExhibitionArtist[];
-  image: string;
+  poster: string;
+  posterAlt: string;
   links: { label: string; url: string }[];
 };
 
@@ -42,7 +45,9 @@ export const exhibitions: Exhibition[] = [
     title: "Refuge in Community",
     line: "Where does a community keep its shelter?",
     period: "8 – 29 February 2024",
-    site: "Nomadic Art Gallery, Victoria Island, Lagos",
+    site: "Nomadic Art Gallery",
+    address: "22 Adetokunbo Ademola Road, Victoria Island, Lagos",
+    events: [{ name: "Community Banter", date: "2 March 2024", time: "4pm – 8pm" }],
     curatedBy: "Art Digging",
     presentedWith: "Nomadic Art Gallery",
     alongside: {
@@ -72,7 +77,9 @@ export const exhibitions: Exhibition[] = [
       { name: "Olalekan Adeyemi", works: [] },
       { name: "Josh Egesi", works: [] },
     ],
-    image: "/images/curatorial/refuge-in-community.svg",
+    poster: "/images/curatorial/refuge-in-community-poster.jpg",
+    posterAlt:
+      "Yellow poster: Community Banter, March 2nd 2024, 4pm to 8pm. Refuge in Community. Nomadic Art Gallery, 22 Adetokunbo Ademola Road, Victoria Island, Lagos. Logos of Lagos Biennial, Art Digging and Nomadic Art Gallery.",
     links: [
       { label: "Nomadic Art", url: "https://nomadic-art.com/refuge-in-community/" },
       { label: "Lagos Biennial 2024", url: "https://lagos-biennial.org/lb-2024/" },

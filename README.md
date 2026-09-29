@@ -2,7 +2,7 @@
 
 > Every work holds a story. We dig it up.
 
-Contemporary African art, unearthed with the stories buried inside it.
+Art Digging curates contemporary African art and the stories buried inside it.
 Next.js (App Router) + TypeScript + Tailwind CSS v4.
 
 ## Run
@@ -16,22 +16,23 @@ npm run build && npm start
 ## Structure
 
 ```
-app/                 routes: home, works, artists, stories, collections (+ detail pages)
-app/api/subscribe    email sign-up endpoint (validates only; not stored yet)
-components/          UI
-lib/data.ts          all content: artists, artworks, stories, collections
-lib/site.ts          site name, tagline, contact email
-scripts/generate-art.mjs   regenerates placeholder art in public/images (`npm run art`)
+app/                  routes: home, /stories, /curatorial (+ detail pages)
+app/api/subscribe     email sign-up endpoint (validates only; not stored yet)
+components/           UI (Logo.tsx is the Art Digging mark as an inline SVG)
+lib/exhibitions.ts    curated exhibitions ("digs")
+lib/stories.ts        stories
+lib/site.ts           site name, tagline, Instagram, contact email
+public/images/        real images only
 ```
+
+## Adding content
+
+- **Exhibition pieces:** in `lib/exhibitions.ts`, fill in each artist's `works`
+  (title, year, medium, dimensions, image). Put images in `public/images/curatorial/`.
+- **Stories:** add entries to `lib/stories.ts`. `image` is optional.
+- **New exhibition:** add another entry to `exhibitions` with the next `number`.
 
 ## Before launch
 
-- The artists, works and stories in `lib/data.ts` are **fictional placeholders**. Replace them with real, consented content and real artwork images.
 - `lib/site.ts` has a placeholder contact email.
 - `app/api/subscribe/route.ts` needs a mailing-list provider to actually store sign-ups.
-
-## Curatorial
-
-Exhibitions curated by Art Digging live in `lib/exhibitions.ts` and render at `/curatorial`.
-To add the pieces for an exhibition, fill in each artist's `works` array (title, year, medium,
-dimensions) and put the images in `public/images/curatorial/`.

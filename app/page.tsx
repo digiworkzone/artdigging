@@ -1,14 +1,11 @@
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
-import SectionHeader from "@/components/SectionHeader";
-import ArtworkCard from "@/components/ArtworkCard";
-import ArtistCard from "@/components/ArtistCard";
 import StoryCard from "@/components/StoryCard";
-import CollectionRow from "@/components/CollectionRow";
-import NewsletterSignup from "@/components/NewsletterSignup";
 import ExhibitionFeature from "@/components/ExhibitionFeature";
-import { artists, artworks, collections, stories } from "@/lib/data";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { exhibitions } from "@/lib/exhibitions";
+import { stories } from "@/lib/stories";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -24,45 +21,27 @@ export default function HomePage() {
         </Reveal>
       </section>
 
-      <ExhibitionFeature exhibition={exhibitions[0]} />
-
-      <section id="unearthed" className="shell scroll-mt-24 py-32">
-        <SectionHeader label="Unearthed" title="Recent finds" href="/artworks" action="All works" />
-        <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {artworks.slice(0, 3).map((artwork, i) => (
-            <Reveal key={artwork.slug} delay={i * 120}>
-              <ArtworkCard artwork={artwork} />
-            </Reveal>
-          ))}
-        </div>
+      <section id="dig" className="shell scroll-mt-24 pb-32 sm:pb-48">
+        <Reveal>
+          <ExhibitionFeature exhibition={exhibitions[0]} />
+        </Reveal>
       </section>
 
-      <section className="border-y border-bone/10 bg-soil py-32">
+      <section className="border-t border-bone/10 bg-soil py-32">
         <div className="shell">
-          <Reveal>
-            <p className="label mb-10">From beneath</p>
-            <StoryCard story={stories[0]} />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="shell py-32">
-        <SectionHeader label="The hands" title="Artists" href="/artists" action="Meet them" />
-        <div className="grid grid-cols-2 gap-x-8 gap-y-14 lg:grid-cols-4">
-          {artists.map((artist, i) => (
-            <Reveal key={artist.slug} delay={i * 100}>
-              <ArtistCard artist={artist} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="shell pb-16">
-        <SectionHeader label="Layers" title="Collections" />
-        <div className="border-b border-bone/10">
-          {collections.map((collection, i) => (
-            <CollectionRow key={collection.slug} collection={collection} index={i} />
-          ))}
+          <div className="mb-14 flex items-end justify-between gap-6">
+            <p className="label">Stories</p>
+            <Link href="/stories" className="link-line whitespace-nowrap">
+              All stories <span aria-hidden>→</span>
+            </Link>
+          </div>
+          <div className="space-y-20">
+            {stories.slice(0, 3).map((story) => (
+              <Reveal key={story.slug}>
+                <StoryCard story={story} showImage={false} />
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "art": "node scripts/generate-art.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "^16.3.7",
