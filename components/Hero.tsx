@@ -14,7 +14,7 @@ export default function Hero() {
         </h1>
         <div className="mt-12 flex animate-rise flex-col gap-8 [animation-delay:300ms] sm:flex-row sm:items-end sm:justify-between">
           <p className="max-w-sm text-dust">
-            Art Digging curates contemporary African art and the stories buried inside it.
+            Art Digging explores and curates contemporary art and the stories buried inside it.
           </p>
           <a href="#dig" className="link-line">
             Start digging <span aria-hidden>↓</span>

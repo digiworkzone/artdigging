@@ -2,7 +2,7 @@
 
 > Every work holds a story. We dig it up.
 
-Art Digging curates contemporary African art and the stories buried inside it.
+Art Digging explores and curates contemporary art and the stories buried inside it.
 Next.js (App Router) + TypeScript + Tailwind CSS v4.
 
 ## Run
