@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         {
           heading: "What we collect",
           body: [
-            "If you join our list, we collect your email address. That is the only personal information we ask for.",
+            "If you join our list, we collect your email address and the date you joined. If you send us a message, we also keep that message so we can reply.",
             "Like most websites, our hosting provider automatically records basic technical information when you visit, such as your IP address, browser type and the pages you view. This is used to keep the site running and secure.",
           ],
         },
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
           body: [
             "We do not use advertising or tracking cookies.",
             "Some pages include videos embedded from YouTube in privacy-enhanced mode. YouTube may set cookies once you press play; its own privacy policy applies to that.",
-            "The site is hosted by Vercel. If we use a mailing-list service to send our emails, your address is stored with that service on our behalf.",
+            "The site is hosted by Vercel. Sign-ups and messages are stored in a private Google Sheet that only Art Digging can access, and our emails are sent through Resend. Both process your email address on our behalf.",
             "Links to other sites, such as Nomadic Art Gallery, the Lagos Biennial or Instagram, are governed by those sites' own policies.",
           ],
         },
