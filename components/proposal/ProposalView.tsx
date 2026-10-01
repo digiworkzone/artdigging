@@ -1,5 +1,6 @@
 import Logo from "@/components/Logo";
 import Reveal from "@/components/Reveal";
+import Glimpse from "@/components/proposal/Glimpse";
 import type { Proposal, ProposalSection } from "@/lib/proposals";
 import { cn } from "@/lib/utils";
 
@@ -131,8 +132,13 @@ export default function ProposalView({ proposal }: { proposal: Proposal }) {
         </p>
       </section>
 
-      {proposal.sections.map((section, i) => (
-        <Section key={i} section={section} />
+      {[-1, ...proposal.sections.keys()].map((i) => (
+        <div key={i}>
+          {i >= 0 ? <Section section={proposal.sections[i]} /> : null}
+          {proposal.glimpses
+            ?.filter((g) => g.after === i)
+            .map((g) => <Glimpse key={g.image.src} image={g.image} align={g.align} />)}
+        </div>
       ))}
 
       <section className="border-t border-bone/10 bg-soil">

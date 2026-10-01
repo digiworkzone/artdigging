@@ -28,6 +28,13 @@ export type ProposalSection =
       body: string[];
     };
 
+export type ProposalGlimpse = {
+  /** Shown after this section index; -1 means straight after the hero. */
+  after: number;
+  align?: "left" | "right";
+  image: { src: string; alt: string; credit: string; width: number; height: number };
+};
+
 export type Proposal = {
   slug: string;
   number: string;
@@ -42,6 +49,8 @@ export type Proposal = {
     body: string;
   };
   sections: ProposalSection[];
+  /** Small, half-hidden photographs placed between sections. */
+  glimpses?: ProposalGlimpse[];
   closing: string;
   contact: { label: string; email: string; line: string };
 };
