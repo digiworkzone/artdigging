@@ -38,6 +38,7 @@ export default function NewsletterSignup() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [support, setSupport] = useState<SupportStatus>("closed");
 
   async function onJoin(event: React.FormEvent<HTMLFormElement>) {
@@ -47,6 +48,7 @@ export default function NewsletterSignup() {
     try {
       const { json } = await post("/api/subscribe", {
         email,
+        name,
         website: form.get("website"),
         page: window.location.pathname,
       });
@@ -132,8 +134,22 @@ export default function NewsletterSignup() {
             )}
           </div>
         ) : (
-          <form onSubmit={onJoin} className="relative mx-auto mt-12 flex max-w-md flex-col gap-4 sm:flex-row">
+          <form onSubmit={onJoin} className="relative mx-auto mt-12 flex max-w-xl flex-col gap-4 sm:flex-row">
             <Honeypot />
+            <label htmlFor="join-name" className="sr-only">
+              First name (optional)
+            </label>
+            <input
+              id="join-name"
+              name="name"
+              type="text"
+              autoComplete="given-name"
+              maxLength={60}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="First name (optional)"
+              className={`${fieldClass} sm:w-44 sm:flex-none`}
+            />
             <label htmlFor="join-email" className="sr-only">
               Email address
             </label>
@@ -144,6 +160,7 @@ export default function NewsletterSignup() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               placeholder="your@email.com"
               className={`${fieldClass} flex-1`}
             />

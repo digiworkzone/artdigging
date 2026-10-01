@@ -45,7 +45,7 @@ listed in `.env.example`.
 
 **Google Sheet**
 1. Create a sheet with two tabs, named exactly:
-   - `Subscribers` with headers `Email | Joined | Page` in row 1
+   - `Subscribers` with headers `Email | Joined | Page | Name` in row 1
    - `Messages` with headers `Date | Email | Message` in row 1
 2. In Google Cloud Console: create a project, enable the **Google Sheets API**, then
    create a **service account** and a **JSON key** for it.

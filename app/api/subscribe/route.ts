@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { appendRow, readColumn, sheetsConfigured } from "@/lib/sheets";
 import { emailConfigured, sendWelcome } from "@/lib/email";
-import { EMAIL, normaliseEmail, rateLimited } from "@/lib/guard";
+import { EMAIL, cleanName, normaliseEmail, rateLimited } from "@/lib/guard";
 
-// Sheet tab "Subscribers": Email | Joined | Page
+// Sheet tab "Subscribers": Email | Joined | Page | Name
 const TAB = "Subscribers";
 
 export async function POST(request: Request) {
@@ -17,6 +17,7 @@ export async function POST(request: Request) {
   }
 
   const email = normaliseEmail(body?.email);
+  const name = cleanName(body?.name);
   if (!EMAIL.test(email) || email.length > 254) {
     return NextResponse.json({ status: "error", error: "Invalid email" }, { status: 400 });
   }
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     const page = typeof body?.page === "string" ? body.page.slice(0, 200) : "";
-    await appendRow(TAB, [email, new Date().toISOString(), page]);
+    await appendRow(TAB, [email, new Date().toISOString(), page, name]);
   } catch (err) {
     console.error("subscribe: sheet write failed", err);
     return NextResponse.json({ status: "error", error: "Could not save your email." }, { status: 500 });
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
   // They're saved; a failed welcome email shouldn't undo the sign-up.
   if (emailConfigured()) {
     try {
-      await sendWelcome(email);
+      await sendWelcome(email, name || undefined);
     } catch (err) {
       console.error("subscribe: welcome email failed", err);
     }

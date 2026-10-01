@@ -18,3 +18,13 @@ export function rateLimited(request: Request, limit = 5, windowMs = 10 * 60_000)
   hits.set(ip, recent);
   return recent.length > limit;
 }
+
+/** Optional first name: trimmed, single-line, no markup, at most 60 characters. */
+export function cleanName(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value
+    .replace(/[\u0000-\u001f\u007f<>]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 60);
+}
