@@ -34,7 +34,7 @@ export async function sendWelcome(to: string) {
     text: [
       "You're on the list.",
       "",
-      "Every work holds a story. We dig it up.",
+      "Every work holds a story.",
       "",
       "We'll write when we find something: new digs, stories from beneath, and previews before anyone else.",
       "",
@@ -50,8 +50,8 @@ export async function sendWelcome(to: string) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0b0a09"><tr><td align="center" style="padding:56px 24px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px">
 <tr><td style="font:11px/1 Helvetica,Arial,sans-serif;letter-spacing:4px;text-transform:uppercase;color:#8f877b">Art Digging</td></tr>
-<tr><td style="padding-top:28px;font-size:40px;line-height:1.1;font-weight:300">You're on the list.</td></tr>
-<tr><td style="padding-top:20px;font-size:22px;line-height:1.4;font-style:italic;color:#c8743a">Every work holds a story. We dig it up.</td></tr>
+<tr><td style="padding-top:28px;font-size:40px;line-height:1.1;font-weight:300;color:#ebe4d8">You're on the list.</td></tr>
+<tr><td style="padding-top:20px;font-size:22px;line-height:1.4;font-style:italic;color:#c8743a">Every work holds a story.</td></tr>
 <tr><td style="padding-top:28px;font:15px/1.7 Helvetica,Arial,sans-serif;color:#b9b2a6">We'll write when we find something: new digs, stories from beneath, and previews before anyone else.</td></tr>
 <tr><td style="padding-top:32px"><a href="${url}/curatorial/refuge-in-community" style="display:inline-block;border:1px solid #4a443d;padding:14px 22px;font:12px/1 Helvetica,Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:#ebe4d8;text-decoration:none">Start with Dig 001</a></td></tr>
 <tr><td style="padding-top:48px;border-bottom:1px solid #2a2622"></td></tr>
