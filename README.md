@@ -54,7 +54,7 @@ listed in `.env.example`.
    the JSON) and `GOOGLE_SHEET_ID` (from the sheet URL).
 
 **Resend**
-1. Add and verify `artdigging.com` in Resend (it gives DNS records to add at the
+1. Add and verify a sending domain in Resend, e.g. `hello.artdigging.com` (it gives DNS records to add at the
    domain's DNS provider).
 2. Create an API key; set `RESEND_API_KEY`, `RESEND_FROM` and `SUPPORT_EMAIL`.
 

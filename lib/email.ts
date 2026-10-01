@@ -29,7 +29,7 @@ export async function sendWelcome(to: string) {
   const url = siteUrl();
   await send({
     to,
-    reply_to: site.contactEmail,
+    reply_to: process.env.SUPPORT_EMAIL ?? site.contactEmail,
     subject: "You're on the list",
     text: [
       "You're on the list.",
