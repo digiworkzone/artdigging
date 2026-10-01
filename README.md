@@ -61,6 +61,18 @@ listed in `.env.example`.
 Add the variables in Vercel → Settings → Environment Variables, then redeploy.
 Until the Google variables are set, the form shows "Sign-up is not available yet."
 
+## Proposals (proposal.artdigging.com)
+
+Private, code-locked proposal pages. `proxy.ts` maps `proposal.artdigging.com/<slug>`
+to `app/proposals/[slug]`. Content lives in `lib/proposals.ts`; codes live only in
+the `PROPOSAL_CODES` env var (`slug:CODE,slug:CODE`), so they never touch the repo.
+The page is only rendered after the code is checked on the server; an httpOnly
+cookie keeps it open for 90 days, and changing a code locks everyone out again.
+Proposals are `noindex` and disallowed in `robots.txt`.
+
+To add one: add an entry to `proposals` in `lib/proposals.ts`, add `slug:CODE` to
+`PROPOSAL_CODES` in Vercel, redeploy, and send the link with the code.
+
 ## Before launch
 
 - `lib/site.ts` has a placeholder contact email.
