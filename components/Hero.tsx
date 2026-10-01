@@ -10,7 +10,6 @@ export default function Hero() {
       <div className="shell pb-20 sm:pb-28">
         <h1 className="max-w-5xl animate-rise font-serif text-6xl leading-[0.92] font-light text-bone sm:text-8xl lg:text-9xl">
           Every work holds a story.
-          <span className="mt-2 block text-ember italic">We dig it up.</span>
         </h1>
         <div className="mt-12 flex animate-rise flex-col gap-8 [animation-delay:300ms] sm:flex-row sm:items-end sm:justify-between">
           <p className="max-w-sm text-dust">
