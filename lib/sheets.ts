@@ -11,7 +11,10 @@ let cached: { token: string; expires: number } | null = null;
 
 function config() {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  // Accepts the key with or without surrounding quotes, and with literal "\n"s.
+  const key = process.env.GOOGLE_PRIVATE_KEY?.trim()
+    .replace(/^"|"$/g, "")
+    .replace(/\\n/g, "\n");
   const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!email || !key || !sheetId) return null;
   return { email, key, sheetId };
