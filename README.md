@@ -70,6 +70,9 @@ The page is only rendered after the code is checked on the server; an httpOnly
 cookie keeps it open for 90 days, and changing a code locks everyone out again.
 Proposals are `noindex` and disallowed in `robots.txt`.
 
+The subdomain root (`proposal.artdigging.com`) also has a code box: a code alone
+opens the proposal it belongs to, so codes must be unique across proposals.
+
 To add one: add an entry to `proposals` in `lib/proposals.ts`, add `slug:CODE` to
 `PROPOSAL_CODES` in Vercel, redeploy, and send the link with the code.
 

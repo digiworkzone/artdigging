@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/components/Logo";
 
-export default function CodeGate({ slug }: { slug: string }) {
+export default function CodeGate({ slug }: { slug?: string }) {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [status, setStatus] = useState<"idle" | "checking" | "error">("idle");
@@ -19,7 +19,14 @@ export default function CodeGate({ slug }: { slug: string }) {
       body: JSON.stringify({ slug, code }),
     }).catch(() => null);
     if (res?.ok) {
-      router.refresh();
+      if (slug) {
+        router.refresh();
+      } else {
+        // Front page: go to the proposal this code opened.
+        const { slug: opened } = await res.json();
+        const onSubdomain = window.location.hostname.startsWith("proposal.");
+        router.push(onSubdomain ? `/${opened}` : `/proposals/${opened}`);
+      }
       return;
     }
     const json = await res?.json().catch(() => ({}));

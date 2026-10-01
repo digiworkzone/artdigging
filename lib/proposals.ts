@@ -148,11 +148,10 @@ export const proposals: Proposal[] = [
       },
     ],
     closing: "A house that stood for what a neighborhood lost becomes a place for what it can build.",
-    // Placeholder: the original file had "[YOUR NAME] · Producer · [YOUR EMAIL]".
     contact: {
       label: "Get involved",
       email: "hello@artdigging.com",
-      line: "Art Digging · hello@artdigging.com",
+      line: "Sam · Producer · hello@artdigging.com",
     },
   },
 ];
