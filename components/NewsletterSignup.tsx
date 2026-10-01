@@ -137,7 +137,7 @@ export default function NewsletterSignup() {
           <form onSubmit={onJoin} className="relative mx-auto mt-12 flex max-w-xl flex-col gap-4 sm:flex-row">
             <Honeypot />
             <label htmlFor="join-name" className="sr-only">
-              First name (optional)
+              First name
             </label>
             <input
               id="join-name"
@@ -147,7 +147,7 @@ export default function NewsletterSignup() {
               maxLength={60}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="First name (optional)"
+              placeholder="First name"
               className={`${fieldClass} sm:w-44 sm:flex-none`}
             />
             <label htmlFor="join-email" className="sr-only">
