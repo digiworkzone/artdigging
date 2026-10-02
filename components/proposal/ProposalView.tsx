@@ -160,9 +160,25 @@ export default function ProposalView({ proposal }: { proposal: Proposal }) {
         </div>
       </section>
 
-      <footer className="shell flex flex-col gap-2 py-10 text-xs text-dust sm:flex-row sm:justify-between">
-        <span>A proposal by Art Digging · artdigging.com</span>
-        <span>Confidential. Please don&apos;t share without permission.</span>
+      <footer className="shell space-y-6 py-10 text-xs text-dust">
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+          <span>A proposal by Art Digging · artdigging.com</span>
+          <span>Confidential. Please don&apos;t share without permission.</span>
+        </div>
+        {proposal.glimpses?.length ? (
+          <p className="leading-6 text-dust/70">
+            Photographs:{" "}
+            {proposal.glimpses.map((g, i) => (
+              <span key={g.source}>
+                {i > 0 ? " · " : null}
+                <a href={g.source} target="_blank" rel="noreferrer" className="underline decoration-dust/30 underline-offset-2 hover:text-bone">
+                  {g.image.credit}
+                </a>
+              </span>
+            ))}
+            . Library of Congress images are in the public domain.
+          </p>
+        ) : null}
       </footer>
     </div>
   );

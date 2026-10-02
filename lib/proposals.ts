@@ -33,6 +33,8 @@ export type ProposalGlimpse = {
   after: number;
   align?: "left" | "right";
   image: { src: string; alt: string; credit: string; width: number; height: number };
+  /** Where the photograph comes from, linked in the credits. */
+  source: string;
 };
 
 export type Proposal = {
@@ -154,6 +156,56 @@ export const proposals: Proposal[] = [
           "Trap House Reimagined delivers goals the city has already adopted in Envision Montgomery 2040, the Creative Place Strategy, and Together We Rise.",
           "It returns a vacant property to use, puts local artists first, and is measured with the city's Community Vitality Index, scored before the exhibition and again after launch.",
         ],
+      },
+    ],
+    glimpses: [
+      {
+        after: -1,
+        align: "right",
+        image: {
+          src: "/images/proposals/trap-house-reimagined/grove-street.jpg",
+          alt: "A vacant two-storey building on Grove Street, its windows and doors boarded up",
+          credit: "863 Grove St., Centennial Hill · Chris Pruitt, CC BY-SA 4.0",
+          width: 960,
+          height: 720,
+        },
+        source: "https://commons.wikimedia.org/wiki/File:863_Grove_St._Montgomery_2024-08-22.jpg",
+      },
+      {
+        after: 0,
+        align: "left",
+        image: {
+          src: "/images/proposals/trap-house-reimagined/tenant-window-1937.jpg",
+          alt: "A window in a weathered wooden wall, patched with paper, a thin curtain behind the glass",
+          credit: "Window of a tenant farmer's home, Montgomery County, 1937 · Arthur Rothstein, Library of Congress",
+          width: 932,
+          height: 675,
+        },
+        source: "https://www.loc.gov/item/2017775904/",
+      },
+      {
+        after: 1,
+        align: "right",
+        image: {
+          src: "/images/proposals/trap-house-reimagined/centennial-hill.jpg",
+          alt: "Houses with front porches along South Jackson Street",
+          credit: "400 block of South Jackson St. · Chris Pruitt, CC BY-SA 3.0",
+          width: 960,
+          height: 720,
+        },
+        source: "https://commons.wikimedia.org/wiki/File:Centennial_Hill_Montgomery_Feb_2012_01.jpg",
+      },
+      {
+        after: 3,
+        align: "left",
+        image: {
+          src: "/images/proposals/trap-house-reimagined/dexter-avenue-storefront.jpg",
+          alt: "An empty storefront on Dexter Avenue, its windows filled with paintings",
+          credit: "Abandoned storefront with murals, lower Dexter Avenue, 2010 · Carol M. Highsmith, Library of Congress",
+          width: 1100,
+          height: 921,
+        },
+        source: "https://www.loc.gov/item/2010637424/",
       },
     ],
     closing: "A house that stood for what a neighborhood lost becomes a place for what it can build.",
