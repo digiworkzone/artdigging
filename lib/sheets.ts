@@ -84,3 +84,10 @@ export async function appendRow(tab: string, row: string[]) {
     body: JSON.stringify({ values: [row] }),
   });
 }
+
+/** Reads a block of columns, e.g. readRows("Votes", "B", "C"). */
+export async function readRows(tab: string, from: string, to: string): Promise<string[][]> {
+  const range = encodeURIComponent(`${tab}!${from}:${to}`);
+  const data = (await sheetsFetch(`values/${range}`)) as { values?: string[][] };
+  return data.values ?? [];
+}

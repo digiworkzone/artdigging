@@ -54,6 +54,7 @@ export type Proposal = {
   /** Small, half-hidden photographs placed between sections. */
   glimpses?: ProposalGlimpse[];
   closing: string;
+  /** Shown under the poll as the contact for questions. */
   contact: { label: string; email: string; line: string };
 };
 

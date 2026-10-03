@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo";
 import Reveal from "@/components/Reveal";
 import Glimpse from "@/components/proposal/Glimpse";
+import ProposalPoll from "@/components/proposal/ProposalPoll";
 import type { Proposal, ProposalSection } from "@/lib/proposals";
 import { cn } from "@/lib/utils";
 
@@ -100,9 +101,16 @@ function Section({ section }: { section: ProposalSection }) {
   }
 }
 
-export default function ProposalView({ proposal }: { proposal: Proposal }) {
+export default function ProposalView({
+  proposal,
+  vote,
+}: {
+  proposal: Proposal;
+  /** This visitor's earlier vote, if any. */
+  vote?: "yes" | "no";
+}) {
   const accent = proposal.accent ?? "#c8743a";
-  const subject = encodeURIComponent(`${proposal.title}: getting involved`);
+  const subject = encodeURIComponent(proposal.title);
 
   return (
     <div style={{ "--accent": accent } as React.CSSProperties}>
@@ -148,15 +156,18 @@ export default function ProposalView({ proposal }: { proposal: Proposal }) {
               {proposal.closing}
             </p>
           </Reveal>
-          <Reveal delay={150} className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center">
+          <Reveal delay={150} className="mt-16">
+            <ProposalPoll slug={proposal.slug} initialVote={vote} />
+          </Reveal>
+          <p className="mt-16 text-sm text-dust">
+            Questions?{" "}
             <a
               href={`mailto:${proposal.contact.email}?subject=${subject}`}
-              className="inline-flex min-h-13 items-center justify-center bg-[var(--accent)] px-8 text-xs font-medium tracking-[0.25em] text-void uppercase transition-opacity hover:opacity-85"
+              className="underline decoration-dust/30 underline-offset-4 hover:text-bone"
             >
-              {proposal.contact.label}
+              {proposal.contact.line}
             </a>
-            <span className="text-sm text-dust">{proposal.contact.line}</span>
-          </Reveal>
+          </p>
         </div>
       </section>
 

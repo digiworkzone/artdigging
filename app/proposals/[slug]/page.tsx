@@ -26,5 +26,7 @@ export default async function ProposalPage({ params }: Props) {
   const proposal = getProposal(slug);
   if (!proposal) notFound();
 
-  return (await unlocked(slug)) ? <ProposalView proposal={proposal} /> : <CodeGate slug={slug} />;
+  if (!(await unlocked(slug))) return <CodeGate slug={slug} />;
+  const vote = (await cookies()).get(`vote_${slug}`)?.value;
+  return <ProposalView proposal={proposal} vote={vote === "yes" || vote === "no" ? vote : undefined} />;
 }
