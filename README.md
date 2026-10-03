@@ -75,8 +75,9 @@ each with its own function, template and Resend `category` tag:
 
 **Inbound.** Replies and new mail to news@ arrive at `/api/email/inbound` as Resend
 `email.received` webhooks. The route checks the signature with
-`RESEND_WEBHOOK_SECRET` (`lib/resend-webhook.ts`), ignores mail not addressed to
-news@, fetches the full message from Resend and forwards it to `SUPPORT_GMAIL`:
+`RESEND_WEBHOOK_SECRET` (Resend SDK `resend.webhooks.verify`), ignores mail not
+addressed to news@, fetches the full message (`resend.emails.receiving.get`) and
+forwards it to `SUPPORT_GMAIL`:
 same subject, original sender and body included, Reply-To set to the original
 sender so Reply in Gmail answers them directly. The Resend email id is the
 idempotency key, so webhook retries don't send duplicates. Attachments are

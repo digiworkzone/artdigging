@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyResendWebhook } from "@/lib/resend-webhook";
+import { Resend, type WebhookEventPayload } from "resend";
 import { addressOf, emailConfigured, forwardInboundEmail, senderAddress } from "@/lib/email";
 
 // Resend "email.received" webhook. Mail addressed to news@hello.artdigging.com
@@ -11,76 +11,60 @@ import { addressOf, emailConfigured, forwardInboundEmail, senderAddress } from "
 
 export const runtime = "nodejs";
 
-type Received = {
-  from?: string;
-  to?: string[] | string;
-  cc?: string[] | string;
-  bcc?: string[] | string;
-  subject?: string;
-  created_at?: string;
-  text?: string | null;
-  html?: string | null;
-  attachments?: { filename?: string; content_type?: string; size?: number }[];
-};
-
-const list = (v: unknown) => (Array.isArray(v) ? v : typeof v === "string" && v ? [v] : []).map(String);
-
-async function fetchReceived(id: string): Promise<Received> {
-  const res = await fetch(`https://api.resend.com/emails/receiving/${encodeURIComponent(id)}`, {
-    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`Resend retrieve error: ${res.status} ${await res.text()}`);
-  return res.json();
-}
-
 export async function POST(request: Request) {
   const secret = process.env.RESEND_WEBHOOK_SECRET;
   if (!secret || !emailConfigured()) {
     console.error("inbound: RESEND_WEBHOOK_SECRET or Resend env vars are missing");
     return NextResponse.json({ ok: false }, { status: 503 });
   }
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // The signature covers the exact bytes, so read the raw body before parsing.
+  // The signature covers the exact bytes, so verify the raw body before parsing.
   const raw = await request.text();
-  if (!verifyResendWebhook(raw, request.headers, secret)) {
-    return NextResponse.json({ ok: false, error: "Invalid signature" }, { status: 401 });
-  }
-
-  let event: { type?: string; data?: Received & { email_id?: string } };
+  let event: WebhookEventPayload;
   try {
-    event = JSON.parse(raw);
+    event = resend.webhooks.verify({
+      payload: raw,
+      headers: {
+        id: request.headers.get("svix-id") ?? "",
+        timestamp: request.headers.get("svix-timestamp") ?? "",
+        signature: request.headers.get("svix-signature") ?? "",
+      },
+      webhookSecret: secret,
+    });
   } catch {
-    return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json({ ok: false, error: "Invalid signature" }, { status: 401 });
   }
   if (event.type !== "email.received") return NextResponse.json({ ok: true, skipped: "event type" });
 
-  const data = event.data ?? {};
+  const data = event.data;
   const id = data.email_id;
   if (!id) return NextResponse.json({ ok: true, skipped: "no email id" });
 
   const inbox = senderAddress();
-  const recipients = [...list(data.to), ...list(data.cc), ...list(data.bcc)].map(addressOf);
+  const recipients = [...(data.to ?? []), ...(data.cc ?? []), ...(data.bcc ?? [])].map(addressOf);
   if (!recipients.includes(inbox)) return NextResponse.json({ ok: true, skipped: "not for news@" });
 
   // Never forward our own mail back to ourselves.
   if (data.from && addressOf(data.from) === inbox) return NextResponse.json({ ok: true, skipped: "loop" });
 
   try {
-    const full = await fetchReceived(id);
-    const from = full.from || data.from || "";
+    const { data: full, error } = await resend.emails.receiving.get(id);
+    if (error || !full) throw new Error(`Resend receiving.get error: ${JSON.stringify(error)}`);
+
+    const from = full.from || data.from;
     if (!from) return NextResponse.json({ ok: true, skipped: "no sender" });
 
     await forwardInboundEmail({
       id,
       from,
-      to: list(full.to ?? data.to),
-      cc: list(full.cc ?? data.cc),
+      to: full.to ?? data.to ?? [],
+      cc: full.cc ?? data.cc ?? [],
       subject: full.subject ?? data.subject ?? "",
-      date: full.created_at ?? data.created_at ?? new Date().toISOString(),
+      date: full.created_at ?? data.created_at,
       text: full.text ?? "",
       html: full.html ?? "",
-      attachments: (full.attachments ?? data.attachments ?? []).map((a) => a.filename || "attachment"),
+      attachments: (full.attachments ?? []).map((a) => a.filename || "attachment"),
     });
     return NextResponse.json({ ok: true, forwarded: id });
   } catch (err) {
