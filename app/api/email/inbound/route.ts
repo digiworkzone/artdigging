@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
   try {
     const { data: full, error } = await resend.emails.receiving.get(id);
-    if (error || !full) throw new Error(`Resend receiving.get error: ${JSON.stringify(error)}`);
+    if (error || !full) throw new Error(`receiving.get failed: ${error?.name ?? "unknown"}: ${error?.message ?? "no data"}`);
 
     const from = full.from || data.from;
     if (!from) return NextResponse.json({ ok: true, skipped: "no sender" });
@@ -69,6 +69,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, forwarded: id });
   } catch (err) {
     console.error("inbound: forward failed", err);
-    return NextResponse.json({ ok: false }, { status: 500 });
+    // Only Resend sees this response (the request was signed by Resend), so
+    // the reason is shown in its webhook log. Resend's error text holds no secrets.
+    const reason = err instanceof Error ? err.message.slice(0, 500) : "unknown error";
+    return NextResponse.json({ ok: false, error: reason }, { status: 500 });
   }
 }
