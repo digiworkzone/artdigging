@@ -4,8 +4,8 @@ import { cookieName, hasAccess } from "@/lib/proposal-access";
 import { appendRow, readRows, sheetsConfigured } from "@/lib/sheets";
 import { cleanName, rateLimited } from "@/lib/guard";
 
-// Sheet tab "Votes": Date | Proposal | Vote | Name
-const TAB = "Votes";
+// Sheet tab "Poll": Date | Proposal | Vote | Name
+const TAB = "Poll";
 const voteCookie = (slug: string) => `vote_${slug}`;
 
 async function tally(slug: string) {

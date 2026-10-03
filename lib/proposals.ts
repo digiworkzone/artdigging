@@ -213,7 +213,7 @@ export const proposals: Proposal[] = [
     contact: {
       label: "Get involved",
       email: "hello@artdigging.com",
-      line: "Sam · Producer · hello@artdigging.com",
+      line: "hello@artdigging.com",
     },
   },
 ];

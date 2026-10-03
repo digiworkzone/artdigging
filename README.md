@@ -47,7 +47,7 @@ listed in `.env.example`.
 1. Create a sheet with two tabs, named exactly:
    - `Subscribers` with headers `Email | Joined | Page | Name` in row 1
    - `Messages` with headers `Date | Email | Message` in row 1
-   - `Votes` with headers `Date | Proposal | Vote | Name` in row 1 (proposal polls)
+   - `Poll` with headers `Date | Proposal | Vote | Name` in row 1 (proposal polls)
 2. In Google Cloud Console: create a project, enable the **Google Sheets API**, then
    create a **service account** and a **JSON key** for it.
 3. Share the sheet with the service account's email as **Editor**.
@@ -76,7 +76,7 @@ opens the proposal it belongs to, so codes must be unique across proposals.
 
 Each proposal ends with a yes/no poll (`/api/proposals/vote`). Only visitors who
 entered the code can vote, once per device (cookie), with a name or anonymously.
-Votes go to the `Votes` tab; results are shown only after voting.
+Votes go to the `Poll` tab; results are shown only after voting.
 
 To add one: add an entry to `proposals` in `lib/proposals.ts`, add `slug:CODE` to
 `PROPOSAL_CODES` in Vercel, redeploy, and send the link with the code.
