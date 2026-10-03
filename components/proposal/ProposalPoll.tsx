@@ -14,9 +14,11 @@ const OPTIONS: { value: Vote; label: string }[] = [
 export default function ProposalPoll({ slug, initialVote }: { slug: string; initialVote?: Vote }) {
   const [choice, setChoice] = useState<Vote | null>(null);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [anonymous, setAnonymous] = useState(false);
   const [voted, setVoted] = useState<Vote | null>(initialVote ?? null);
   const [counts, setCounts] = useState<Counts | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [error, setError] = useState("");
 
@@ -36,12 +38,13 @@ export default function ProposalPoll({ slug, initialVote }: { slug: string; init
     const res = await fetch("/api/proposals/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, vote: choice, name, anonymous }),
+      body: JSON.stringify({ slug, vote: choice, name, email: anonymous ? "" : email, anonymous }),
     }).catch(() => null);
     const json = await res?.json().catch(() => ({}));
     if (res?.ok) {
       setVoted(json.vote);
       setCounts(json.counts);
+      setConfirmed(Boolean(json.confirmed));
       return;
     }
     if (json?.vote) {
@@ -59,6 +62,7 @@ export default function ProposalPoll({ slug, initialVote }: { slug: string; init
         <p className="font-serif text-2xl text-bone">
           {voted === "yes" ? "You said yes. Thank you." : "Thank you for being honest."}
         </p>
+        {confirmed ? <p className="mt-3 text-sm text-dust">A confirmation is on its way to your inbox.</p> : null}
         {counts && total > 0 ? (
           <div className="mt-8 space-y-4">
             {OPTIONS.map((o) => {
@@ -147,6 +151,21 @@ export default function ProposalPoll({ slug, initialVote }: { slug: string; init
           Vote anonymously
         </label>
       </div>
+
+      {anonymous ? null : (
+        <label className="mt-4 block">
+          <span className="sr-only">Email for a confirmation (optional)</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            maxLength={254}
+            autoComplete="email"
+            placeholder="Email for a confirmation (optional)"
+            className="min-h-12 w-full border-b border-bone/25 bg-transparent px-1 text-bone placeholder:text-dust/60 focus:border-[var(--accent)] focus:outline-none"
+          />
+        </label>
+      )}
 
       <button
         type="submit"

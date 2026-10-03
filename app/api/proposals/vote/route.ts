@@ -2,9 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getProposal } from "@/lib/proposals";
 import { cookieName, hasAccess } from "@/lib/proposal-access";
 import { appendRow, readRows, sheetsConfigured } from "@/lib/sheets";
-import { cleanName, rateLimited } from "@/lib/guard";
+import { EMAIL, cleanName, normaliseEmail, rateLimited } from "@/lib/guard";
+import { emailConfigured, sendProposalVoteConfirmation } from "@/lib/email";
 
-// Sheet tab "Poll": Date | Proposal | Vote | Name
+// Sheet tab "Poll": Date | Proposal | Vote | Name | Email
 const TAB = "Poll";
 const voteCookie = (slug: string) => `vote_${slug}`;
 
@@ -56,13 +57,19 @@ export async function POST(request: NextRequest) {
   if (!anonymous && !name) {
     return NextResponse.json({ ok: false, error: "Add your name, or vote anonymously." }, { status: 400 });
   }
+  // Optional, for a confirmation email. Anonymous votes never carry one.
+  const email = anonymous ? "" : normaliseEmail(body?.email);
+  if (email && (!EMAIL.test(email) || email.length > 254)) {
+    return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 400 });
+  }
   if (!sheetsConfigured()) {
     return NextResponse.json({ ok: false, error: "Voting isn't available yet." }, { status: 503 });
   }
 
   try {
-    await appendRow(TAB, [new Date().toISOString(), slug, vote, name || "Anonymous"]);
-    const res = NextResponse.json({ ok: true, vote, counts: await tally(slug) });
+    await appendRow(TAB, [new Date().toISOString(), slug, vote, name || "Anonymous", email]);
+    const [counts] = await Promise.all([tally(slug), confirm(email, slug, vote, name)]);
+    const res = NextResponse.json({ ok: true, vote, counts, confirmed: Boolean(email) });
     res.cookies.set(voteCookie(slug), vote, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -74,5 +81,19 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error("vote: sheet write failed", err);
     return NextResponse.json({ ok: false, error: "Your vote didn't go through. Try again?" }, { status: 500 });
+  }
+}
+
+async function confirm(email: string, slug: string, vote: "yes" | "no", name: string) {
+  if (!email) return;
+  if (!emailConfigured()) {
+    console.warn("vote: Resend env vars are missing, confirmation not sent");
+    return;
+  }
+  // The vote is saved; a failed confirmation shouldn't undo it.
+  try {
+    await sendProposalVoteConfirmation(email, { proposalTitle: getProposal(slug)!.title, vote, name: name || undefined });
+  } catch (err) {
+    console.error("vote: confirmation email failed", err);
   }
 }

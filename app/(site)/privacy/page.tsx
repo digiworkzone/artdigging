@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         {
           heading: "What we collect",
           body: [
-            "If you join our list, we collect your email address and the date you joined. If you send us a message, we also keep that message so we can reply.",
+            "If you join our list, we collect your email address and the date you joined. If you send us a message, we also keep that message so we can reply. If you vote on a private proposal and ask for a confirmation, we keep the email you give with your vote and use it only to confirm the vote and follow up on that proposal.",
             "Like most websites, our hosting provider automatically records basic technical information when you visit, such as your IP address, browser type and the pages you view. This is used to keep the site running and secure.",
           ],
         },
