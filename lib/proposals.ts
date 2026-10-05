@@ -212,8 +212,8 @@ export const proposals: Proposal[] = [
     closing: "A house that stood for what a neighborhood lost becomes a place for what it can build.",
     contact: {
       label: "Get involved",
-      email: "hello@artdigging.com",
-      line: "hello@artdigging.com",
+      email: "news@hello.artdigging.com",
+      line: "news@hello.artdigging.com",
     },
   },
 ];
