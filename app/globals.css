@@ -90,3 +90,84 @@
     animation: none;
   }
 }
+
+/* Animated city behind the sign-up form, drawn in components/CityScene.tsx */
+.city-scene {
+  --px: 0;
+  --py: 0;
+}
+
+.city-layer {
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.city-layer-0 { transform: translate(calc(var(--px) * -6px), calc(var(--py) * -3px)); }
+.city-layer-1 { transform: translate(calc(var(--px) * -12px), calc(var(--py) * -6px)); }
+.city-layer-2 { transform: translate(calc(var(--px) * -20px), calc(var(--py) * -10px)); }
+.city-layer-3 { transform: translate(calc(var(--px) * -32px), calc(var(--py) * -14px)); }
+
+.city-pipe {
+  fill: none;
+  stroke: #e8743a;
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.city-pipe-thick { stroke-width: 22; }
+
+.city-flicker { animation: city-flicker 9s steps(1) infinite; }
+.city-sign { animation: city-flicker 6s steps(1) infinite; }
+.city-beacon { animation: city-beacon 2.4s ease-in-out infinite; }
+.city-cloud { animation: city-drift linear infinite; }
+
+.city-tree {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: city-sway 6s ease-in-out infinite alternate;
+}
+
+.city-steam {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: city-steam 3.9s ease-out infinite;
+}
+
+.city-scene.is-paused * { animation-play-state: paused; }
+
+@keyframes city-flicker {
+  0%, 100% { opacity: 1; }
+  40% { opacity: 0.15; }
+  43% { opacity: 1; }
+  46% { opacity: 0.3; }
+  48% { opacity: 1; }
+  80% { opacity: 0; }
+  90% { opacity: 1; }
+}
+@keyframes city-beacon {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+@keyframes city-drift {
+  from { transform: translateX(-400px); }
+  to { transform: translateX(1500px); }
+}
+@keyframes city-sway {
+  from { transform: rotate(-1.5deg); }
+  to { transform: rotate(1.5deg); }
+}
+@keyframes city-steam {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  20% { opacity: 0.45; }
+  100% { opacity: 0; transform: translate(14px, -70px) scale(2.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .city-scene * {
+    animation: none !important;
+  }
+  .city-layer {
+    transition: none;
+    transform: none;
+  }
+  .city-steam { opacity: 0; }
+}

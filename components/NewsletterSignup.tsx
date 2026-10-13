@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CityScene from "@/components/CityScene";
 
 type Status = "idle" | "sending" | "joined" | "exists" | "error";
 type SupportStatus = "closed" | "open" | "sending" | "sent" | "error";
@@ -80,99 +81,106 @@ export default function NewsletterSignup() {
   }
 
   return (
-    <section id="join" className="shell scroll-mt-24 py-32 sm:py-44">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="font-serif text-5xl leading-tight font-light text-bone sm:text-7xl">
-          Be there when the next one <span className="text-ember italic">surfaces.</span>
-        </h2>
+    <section id="join" className="shell scroll-mt-24 py-24 sm:py-32">
+      <div className="relative isolate flex min-h-[780px] items-end justify-center overflow-hidden px-4 pt-72 pb-8 sm:min-h-[720px] sm:items-center sm:px-8 sm:py-16">
+        <CityScene className="absolute inset-0 -z-10" />
+        <div className="w-full max-w-xl border border-bone/10 bg-void/85 px-6 py-10 text-center shadow-2xl backdrop-blur-md sm:px-12 sm:py-14">
+          <h2 className="font-serif text-4xl leading-tight font-light text-bone sm:text-5xl">
+            Be there when the next one <span className="text-ember italic">surfaces.</span>
+          </h2>
 
-        {status === "joined" ? (
-          <p className="mt-12 font-serif text-2xl text-dust italic">
-            You&apos;re on the list. Check your inbox for a welcome from us.
-          </p>
-        ) : status === "exists" ? (
-          <div className="mx-auto mt-12 max-w-md">
-            <p className="font-serif text-2xl text-bone">This email is already on the list.</p>
-            {support === "sent" ? (
-              <p className="mt-6 font-serif text-xl text-dust italic">
-                Message sent. We&apos;ll get back to you at {email}.
-              </p>
-            ) : support === "closed" ? (
-              <p className="mt-4 text-dust">
-                Not getting our emails, or need something else?{" "}
-                <button
-                  type="button"
-                  onClick={() => setSupport("open")}
-                  className="text-bone underline decoration-bone/30 underline-offset-4 hover:text-ember"
-                >
-                  Send us a message
-                </button>
-              </p>
-            ) : (
-              <form onSubmit={onSupport} className="relative mt-8 grid gap-4 text-left">
-                <Honeypot />
-                <label htmlFor="support-message" className="label">
-                  Your message · we&apos;ll reply to {email}
-                </label>
-                <textarea
-                  id="support-message"
-                  name="message"
-                  required
-                  minLength={2}
-                  maxLength={2000}
-                  rows={4}
-                  className={`${fieldClass} resize-y py-3`}
-                  placeholder="How can we help?"
-                />
-                <button type="submit" disabled={support === "sending"} className={`${buttonClass} justify-self-end`}>
-                  {support === "sending" ? "…" : "Send"}
-                </button>
-                {support === "error" ? (
-                  <p className="text-sm text-ember">That didn&apos;t go through. Try again?</p>
-                ) : null}
-              </form>
-            )}
-          </div>
-        ) : (
-          <form onSubmit={onJoin} className="relative mx-auto mt-12 flex max-w-xl flex-col gap-4 sm:flex-row">
-            <Honeypot />
-            <label htmlFor="join-name" className="sr-only">
-              First name
-            </label>
-            <input
-              id="join-name"
-              name="name"
-              type="text"
-              autoComplete="given-name"
-              maxLength={60}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="First name"
-              className={`${fieldClass} sm:w-44 sm:flex-none`}
-            />
-            <label htmlFor="join-email" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="join-email"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              placeholder="your@email.com"
-              className={`${fieldClass} flex-1`}
-            />
-            <button type="submit" disabled={status === "sending"} className={buttonClass}>
-              {status === "sending" ? "…" : "Join"}
-            </button>
-          </form>
-        )}
+          {status === "joined" ? (
+            <p className="mt-12 font-serif text-2xl text-dust italic">
+              You&apos;re on the list. Check your inbox for a welcome from us.
+            </p>
+          ) : status === "exists" ? (
+            <div className="mx-auto mt-12 max-w-md">
+              <p className="font-serif text-2xl text-bone">This email is already on the list.</p>
+              {support === "sent" ? (
+                <p className="mt-6 font-serif text-xl text-dust italic">
+                  Message sent. We&apos;ll get back to you at {email}.
+                </p>
+              ) : support === "closed" ? (
+                <p className="mt-4 text-dust">
+                  Not getting our emails, or need something else?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setSupport("open")}
+                    className="text-bone underline decoration-bone/30 underline-offset-4 hover:text-ember"
+                  >
+                    Send us a message
+                  </button>
+                </p>
+              ) : (
+                <form onSubmit={onSupport} className="relative mt-8 grid gap-4 text-left">
+                  <Honeypot />
+                  <label htmlFor="support-message" className="label">
+                    Your message · we&apos;ll reply to {email}
+                  </label>
+                  <textarea
+                    id="support-message"
+                    name="message"
+                    required
+                    minLength={2}
+                    maxLength={2000}
+                    rows={4}
+                    className={`${fieldClass} resize-y py-3`}
+                    placeholder="How can we help?"
+                  />
+                  <button type="submit" disabled={support === "sending"} className={`${buttonClass} justify-self-end`}>
+                    {support === "sending" ? "…" : "Send"}
+                  </button>
+                  {support === "error" ? (
+                    <p className="text-sm text-ember">That didn&apos;t go through. Try again?</p>
+                  ) : null}
+                </form>
+              )}
+            </div>
+          ) : (
+            <form onSubmit={onJoin} className="relative mt-10 flex flex-col gap-4">
+              <Honeypot />
+              <label htmlFor="join-name" className="sr-only">
+                First name
+              </label>
+              <input
+                id="join-name"
+                name="name"
+                type="text"
+                autoComplete="given-name"
+                maxLength={60}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="First name"
+                className={fieldClass}
+              />
+              <label htmlFor="join-email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="join-email"
+                name="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                placeholder="your@email.com"
+                className={fieldClass}
+              />
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="mt-4 min-h-12 bg-ember px-6 text-xs tracking-[0.25em] text-void uppercase transition-colors hover:bg-bone disabled:opacity-50"
+              >
+                {status === "sending" ? "…" : "Join"}
+              </button>
+            </form>
+          )}
 
-        {status === "error" ? (
-          <p className="mt-4 text-sm text-ember">{error || "That didn't go through. Try again?"}</p>
-        ) : null}
+          {status === "error" ? (
+            <p className="mt-4 text-sm text-ember">{error || "That didn't go through. Try again?"}</p>
+          ) : null}
+        </div>
       </div>
     </section>
   );
