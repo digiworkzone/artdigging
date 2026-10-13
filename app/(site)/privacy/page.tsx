@@ -33,7 +33,7 @@ export default function PrivacyPage() {
           body: [
             "We do not use advertising or tracking cookies.",
             "Some pages include videos embedded from YouTube in privacy-enhanced mode. YouTube may set cookies once you press play; its own privacy policy applies to that.",
-            "The site is hosted by Vercel. Sign-ups and messages are stored in a private Google Sheet that only Art Digging can access, and our emails are sent through Resend. Both process your email address on our behalf.",
+            "The site is hosted by Vercel, which also counts visits for us without cookies: which pages are viewed, the country and type of device, and the site that sent you there, never anything that identifies you. Sign-ups and messages are stored in a private Google Sheet that only Art Digging can access, and our emails are sent through Resend. Both process your email address on our behalf.",
             "Links to other sites, such as Nomadic Art Gallery, the Lagos Biennial or Instagram, are governed by those sites' own policies.",
           ],
         },
